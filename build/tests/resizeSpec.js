@@ -39,17 +39,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var resize_1 = __importDefault(require("../server/resize"));
+var resize_1 = __importDefault(require("../server/utilities/resize"));
 it('expects asyncFun to resolve', function () { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
-        return [2 /*return*/, (0, resize_1.default)('D:/runJs/src/server/encenadaport.jpg', 'encenadaport.jpg', 200, 320).then(function (result) {
+        return [2 /*return*/, (0, resize_1.default)('./src/server/encenadaport.jpg', 'encenadaport.jpg', 200, 320).then(function (result) {
                 expect(result).toEqual('success');
             })];
     });
 }); });
 it('expects asyncFun to reject', function () { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
-        return [2 /*return*/, (0, resize_1.default)('D:/runJs/src/server/encenadaportt.jpg', 'encenadaport.jpg', 200, 320)
+        return [2 /*return*/, (0, resize_1.default)('./src/server/encenadaportt.jpg', 'encenadaport.jpg', 200, 320)
                 .then(function (result) {
                 expect(result).toEqual('Error: Input file is missing');
             })

@@ -40,50 +40,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
-var resize_1 = __importDefault(require("./utilities/resize"));
-var fs_1 = __importDefault(require("fs"));
+var sharp_1 = __importDefault(require("sharp"));
 var app = (0, express_1.default)();
-var port = 3001;
-app.use(express_1.default.static('./src/server'));
-var checkExist = function (path) {
-    if (fs_1.default.existsSync(path))
-        return true;
-    else
-        return false;
-};
-app.get('/api', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var fileName, fileWidth, fileHeight, options;
-    var _a, _b;
-    return __generator(this, function (_c) {
-        fileName = req.query.name;
-        fileWidth = Number((_a = req.query) === null || _a === void 0 ? void 0 : _a.width);
-        fileHeight = Number((_b = req.query) === null || _b === void 0 ? void 0 : _b.height);
-        options = { root: './src/server' };
-        if (fileHeight && fileWidth) {
-            if (checkExist("./src/server/".concat(fileName, "-").concat(fileWidth, "x").concat(fileHeight, ".jpg"))) {
-                res.sendFile("".concat(fileName, "-").concat(fileWidth, "x").concat(fileHeight, ".jpg"), options);
-            }
-            else {
-                (0, resize_1.default)("src/server/".concat(fileName), fileName, fileWidth, fileHeight)
-                    .then(function () {
-                    res.status(200);
-                    res.sendFile("".concat(fileName, "-").concat(fileWidth, "x").concat(fileHeight, ".jpg"), options);
-                })
-                    .catch(function (err) { return res.send(err); });
-            }
+app.use(express_1.default.static('./server'));
+var resize = function (path, name, width, height) { return __awaiter(void 0, void 0, void 0, function () {
+    var err_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, (0, sharp_1.default)(path)
+                        .resize(width, height)
+                        .toFile("src/server/".concat(name, "-").concat(width, "x").concat(height, ".jpg"))];
+            case 1:
+                _a.sent();
+                return [2 /*return*/, new Promise(function (resolve) { return resolve('success'); })];
+            case 2:
+                err_1 = _a.sent();
+                return [2 /*return*/, new Promise(function (_resolve, reject) { return reject("".concat(err_1)); })];
+            case 3: return [2 /*return*/];
         }
-        else {
-            if (checkExist("./src/server/".concat(fileName)))
-                res.sendFile("".concat(fileName), options);
-            else {
-                res.status(400);
-                res.send('File not existed');
-            }
-        }
-        return [2 /*return*/];
     });
-}); });
-app.listen(port, function () {
-    console.log("server started at ".concat(port));
-});
-exports.default = app;
+}); };
+exports.default = resize;
